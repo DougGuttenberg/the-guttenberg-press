@@ -15,11 +15,15 @@ function buildSection(title, emoji, stories) {
 
   let section = `\n${emoji} ${title}\n\n`;
   stories.forEach((story, index) => {
-    const linkText = story.links?.primary ? `🔗 ${story.links.primary}` : '🔗 [No link available]';
-    section += `${story.rank}. ${story.headline}\n`;
+    section += `${index + 1}. ${story.headline}\n`;
     section += `   → Why: ${story.why_this_matters}\n`;
     section += `   💡 ${story.confidence_label} | ${story.source_count} sources\n`;
-    section += `   ${linkText}\n\n`;
+    if (story.sources && story.sources.length > 0) {
+      story.sources.forEach(src => {
+        section += `   📰 ${src.name}: ${src.url}\n`;
+      });
+    }
+    section += `\n`;
   });
 
   return section;
@@ -42,12 +46,16 @@ function buildSportsSection(title, emoji, stories, scoresData) {
     section += '\n';
   }
 
-  stories.forEach(story => {
-    const linkText = story.links?.primary ? `🔗 ${story.links.primary}` : '🔗 [No link available]';
-    section += `${story.rank}. ${story.headline}\n`;
+  stories.forEach((story, index) => {
+    section += `${index + 1}. ${story.headline}\n`;
     section += `   → Why: ${story.why_this_matters}\n`;
     section += `   💡 ${story.confidence_label} | ${story.source_count} sources\n`;
-    section += `   ${linkText}\n\n`;
+    if (story.sources && story.sources.length > 0) {
+      story.sources.forEach(src => {
+        section += `   📰 ${src.name}: ${src.url}\n`;
+      });
+    }
+    section += `\n`;
   });
 
   return section;
@@ -86,11 +94,15 @@ function buildTextPaper(rankedData, scoresData) {
   if (selections.surprise_pick) {
     paper += `\n✨ SURPRISE PICK\n\n`;
     const surprise = selections.surprise_pick;
-    const linkText = surprise.links?.primary ? `🔗 ${surprise.links.primary}` : '🔗 [No link available]';
     paper += `${surprise.headline}\n`;
     paper += `   → Why: ${surprise.why_this_matters}\n`;
     paper += `   💡 ${surprise.confidence_label} | ${surprise.source_count} sources\n`;
-    paper += `   ${linkText}\n\n`;
+    if (surprise.sources && surprise.sources.length > 0) {
+      surprise.sources.forEach(src => {
+        paper += `   📰 ${src.name}: ${src.url}\n`;
+      });
+    }
+    paper += `\n`;
     paper += `${'═'.repeat(27)}\n`;
   }
 
@@ -241,15 +253,19 @@ function buildHtmlPaper(rankedData, scoresData) {
     let html = `<div class="section">
       <h2><span class="emoji">${emoji}</span>${title}</h2>
 `;
-    stories.forEach(story => {
+    stories.forEach((story, index) => {
       html += `
       <div class="story">
-        <h3>${story.rank}. ${story.headline}</h3>
+        <h3>${index + 1}. ${story.headline}</h3>
         <div class="story-why">→ Why: ${story.why_this_matters}</div>
         <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} sources</div>
 `;
-      if (story.links?.primary) {
-        html += `<div class="story-link"><a href="${story.links.primary}" target="_blank">🔗 Read more</a></div>`;
+      if (story.sources && story.sources.length > 0) {
+        html += `<div class="story-link">`;
+        html += story.sources.map(src =>
+          `<a href="${src.url}" target="_blank">📰 ${src.name}</a>`
+        ).join(' &nbsp;·&nbsp; ');
+        html += `</div>`;
       }
       html += `</div>
 `;
@@ -282,15 +298,19 @@ function buildHtmlPaper(rankedData, scoresData) {
       html += `</div>
 `;
     }
-    selections.sports.forEach(story => {
+    selections.sports.forEach((story, index) => {
       html += `
       <div class="story">
-        <h3>${story.rank}. ${story.headline}</h3>
+        <h3>${index + 1}. ${story.headline}</h3>
         <div class="story-why">→ Why: ${story.why_this_matters}</div>
         <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} sources</div>
 `;
-      if (story.links?.primary) {
-        html += `<div class="story-link"><a href="${story.links.primary}" target="_blank">🔗 Read more</a></div>`;
+      if (story.sources && story.sources.length > 0) {
+        html += `<div class="story-link">`;
+        html += story.sources.map(src =>
+          `<a href="${src.url}" target="_blank">📰 ${src.name}</a>`
+        ).join(' &nbsp;·&nbsp; ');
+        html += `</div>`;
       }
       html += `</div>
 `;
@@ -316,8 +336,12 @@ function buildHtmlPaper(rankedData, scoresData) {
       <div class="story-why">→ Why: ${surprise.why_this_matters}</div>
       <div class="story-meta">💡 ${surprise.confidence_label} | ${surprise.source_count} sources</div>
 `;
-    if (surprise.links?.primary) {
-      html += `<div class="story-link"><a href="${surprise.links.primary}" target="_blank">🔗 Read more</a></div>`;
+    if (surprise.sources && surprise.sources.length > 0) {
+      html += `<div class="story-link">`;
+      html += surprise.sources.map(src =>
+        `<a href="${src.url}" target="_blank">📰 ${src.name}</a>`
+      ).join(' &nbsp;·&nbsp; ');
+      html += `</div>`;
     }
     html += `</div>
 `;
