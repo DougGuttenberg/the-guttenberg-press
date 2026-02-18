@@ -1,0 +1,202 @@
+{
+  "rss_feeds": [
+    {
+      "name": "AI Daily Brief",
+      "url": "https://www.aidailybriefing.com/feed",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Stratechery",
+      "url": "https://stratechery.com/feed/",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Simon Willison",
+      "url": "https://simonwillison.net/atom/everything/",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "One Useful Thing (Ethan Mollick)",
+      "url": "https://www.oneusefulthing.org/feed",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Hacker News AI/ML",
+      "url": "https://hnrss.org/newest?q=AI+OR+LLM+OR+agent",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Anthropic Blog",
+      "url": "https://www.anthropic.com/news/rss.xml",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "OpenAI Blog",
+      "url": "https://openai.com/blog/rss.xml",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "DeepMind Blog",
+      "url": "https://deepmind.google/blog/rss.xml",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Google AI Blog",
+      "url": "https://blog.research.google/feeds/posts/default",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/feed/",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "AdAge",
+      "url": "https://adage.com/rss",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "AdWeek",
+      "url": "https://www.adweek.com/feed/",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "GitHub Trending",
+      "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",
+      "category": "developer",
+      "check_frequency": 1800
+    },
+    {
+      "name": "HBR AI",
+      "url": "https://hbr.org/topic/subject/artificial-intelligence.rss",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "MIT Tech Review AI",
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "JetsXFactor",
+      "url": "https://jetsxfactor.com/feed/",
+      "category": "sports",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Gang Green Nation",
+      "url": "https://www.ganggreennation.com/rss/current",
+      "category": "sports",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Pro Football Focus",
+      "url": "https://www.pff.com/feed",
+      "category": "sports",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Football Outsiders",
+      "url": "https://www.footballoutsiders.com/rss.xml",
+      "category": "sports",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Pitchfork",
+      "url": "https://pitchfork.com/rss/news/",
+      "category": "culture",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Stereogum",
+      "url": "https://www.stereogum.com/feed/",
+      "category": "culture",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Resident Advisor",
+      "url": "https://ra.co/xml/rss.xml",
+      "category": "culture",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Complex",
+      "url": "https://www.complex.com/feeds/channel/all.xml",
+      "category": "culture",
+      "check_frequency": 1800
+    },
+    {
+      "name": "NPR Music",
+      "url": "https://www.npr.org/rss/rss.php?id=1039",
+      "category": "culture",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Serious Eats",
+      "url": "https://www.seriouseats.com/feeds/all",
+      "category": "personal",
+      "check_frequency": 1800
+    },
+    {
+      "name": "ChefSteps",
+      "url": "https://www.chefsteps.com/activities.rss",
+      "category": "personal",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Farnam Street",
+      "url": "https://fs.blog/feed/",
+      "category": "personal",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Tim Ferriss",
+      "url": "https://tim.blog/feed/",
+      "category": "personal",
+      "check_frequency": 1800
+    }
+  ],
+  "newsletter_sources": [
+    {
+      "name": "The Rundown AI",
+      "type": "newsletter",
+      "note": "Forward to paper inbox email"
+    },
+    {
+      "name": "Benedict Evans",
+      "type": "newsletter",
+      "note": "Forward to paper inbox email"
+    }
+  ],
+  "espn_teams": [
+    { "name": "New York Jets", "sport": "nfl", "team_id": "20" },
+    { "name": "New York Yankees", "sport": "mlb", "team_id": "10" },
+    { "name": "New York Mets", "sport": "mlb", "team_id": "21" },
+    { "name": "New York Knicks", "sport": "nba", "team_id": "18" },
+    { "name": "Brooklyn Nets", "sport": "nba", "team_id": "17" }
+  ],
+  "paper_inbox": {
+    "email": "dougs.daily.paper@gmail.com",
+    "check_frequency": 1800,
+    "note": "Check this inbox for 'Send to Paper' items from Doug"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "note": "Twitter/X accounts tracked via RSS bridge (nitter or similar). Configure your RSS bridge URL below.",
+  "rss_bridge_base_url": "https://nitter.net",
+  "rss_path_template": "/{handle}/rss",
+  "researchers": [
+    {
+      "handle": "demaborin",
+      "name": "Demis Hassabis",
+      "category": "lab_leader",
+      "org": "Google DeepMind"
+    },
+    {
+      "handle": "DarioAmodei",
+      "name": "Dario Amodei",
+      "category": "lab_leader",
+      "org": "Anthropic"
+    },
+    {
+      "handle": "sama",
+      "name": "Sam Altman",
+      "category": "lab_leader",
+      "org": "OpenAI"
+    },
+    {
+      "handle": "ylecun",
+      "name": "Yann LeCun",
+      "category": "lab_leader",
+      "org": "Meta AI"
+    },
+    {
+      "handle": "iaborting",
+      "name": "Ilya Sutskever",
+      "category": "lab_leader",
+      "org": "SSI"
+    },
+    {
+      "handle": "karpathy",
+      "name": "Andrej Karpathy",
+      "category": "researcher"
+    },
+    {
+      "handle": "fchollet",
+      "name": "François Chollet",
+      "category": "researcher"
+    },
+    {
+      "handle": "NouhaD",
+      "name": "Nouha Dziri",
+      "category": "researcher"
+    },
+    {
+      "handle": "SashLuccioni",
+      "name": "Sasha Luccioni",
+      "category": "researcher"
+    },
+    {
+      "handle": "rasaborin",
+      "name": "Sebastian Raschka",
+      "category": "researcher"
+    },
+    {
+      "handle": "AlecRad",
+      "name": "Alec Radford",
+      "category": "researcher"
+    },
+    {
+      "handle": "chelseabfinn",
+      "name": "Chelsea Finn",
+      "category": "researcher"
+    },
+    {
+      "handle": "OriolVinyalsML",
+      "name": "Oriol Vinyals",
+      "category": "researcher"
+    },
+    {
+      "handle": "jackclarkSF",
+      "name": "Jack Clark",
+      "category": "researcher"
+    },
+    {
+      "handle": "simonw",
+      "name": "Simon Willison",
+      "category": "builder"
+    },
+    {
+      "handle": "swyx",
+      "name": "Swyx",
+      "category": "builder"
+    },
+    {
+      "handle": "goodaborin",
+      "name": "Riley Goodside",
+      "category": "builder"
+    },
+    {
+      "handle": "eugeneyan",
+      "name": "Eugene Yan",
+      "category": "builder"
+    },
+    {
+      "handle": "chipro",
+      "name": "Chip Huyen",
+      "category": "builder"
+    },
+    {
+      "handle": "jasonwei20",
+      "name": "Jason Wei",
+      "category": "builder"
+    },
+    {
+      "handle": "hwchase17",
+      "name": "Harrison Chase",
+      "category": "builder",
+      "org": "LangChain"
+    },
+    {
+      "handle": "jerryjliu0",
+      "name": "Jerry Liu",
+      "category": "builder",
+      "org": "LlamaIndex"
+    },
+    {
+      "handle": "linuslee",
+      "name": "Linus Lee",
+      "category": "product"
+    },
+    {
+      "handle": "aaborin",
+      "name": "Amjad Masad",
+      "category": "product",
+      "org": "Replit"
+    },
+    {
+      "handle": "AravSrinivas",
+      "name": "Aravind Srinivas",
+      "category": "product",
+      "org": "Perplexity"
+    },
+    {
+      "handle": "jxnlco",
+      "name": "Jason Liu",
+      "category": "product"
+    },
+    {
+      "handle": "LKilpatrick",
+      "name": "Logan Kilpatrick",
+      "category": "product"
+    },
+    {
+      "handle": "melaborin",
+      "name": "Melanie Mitchell",
+      "category": "safety_ethics"
+    },
+    {
+      "handle": "emilyaborin",
+      "name": "Emily Bender",
+      "category": "safety_ethics"
+    },
+    {
+      "handle": "timaborin",
+      "name": "Timnit Gebru",
+      "category": "safety_ethics"
+    },
+    {
+      "handle": "connaborin",
+      "name": "Connor Leahy",
+      "category": "safety_ethics",
+      "org": "Conjecture"
+    }
+  ]
+}

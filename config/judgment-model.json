@@ -1,0 +1,49 @@
+{
+  "weights": {
+    "system_shift": 0.25,
+    "signal_timing": 0.20,
+    "cross_domain": 0.20,
+    "actionability": 0.20,
+    "evidence_quality": 0.10,
+    "disagreement": 0.05,
+    "manual_boost": 2.0
+  },
+  "sports_weights": {
+    "strategic_thinking": 0.30,
+    "jets_relevance": 0.25,
+    "timing": 0.20,
+    "actionability": 0.15,
+    "evidence": 0.10
+  },
+  "culture_weights": {
+    "cultural_signal": 0.30,
+    "cross_domain": 0.20,
+    "timing": 0.20,
+    "personal_resonance": 0.20,
+    "evidence": 0.10
+  },
+  "personal_weights": {
+    "actionability": 0.40,
+    "system_thinking": 0.30,
+    "evidence": 0.20,
+    "timing": 0.10
+  },
+  "thresholds": {
+    "front_page": 7.0,
+    "business_section": 5.5,
+    "sports_section": 5.0,
+    "culture_section": 5.0,
+    "personal_section": 6.0
+  },
+  "section_limits": {
+    "front_page": { "min": 3, "max": 4 },
+    "business": { "min": 2, "max": 3 },
+    "sports": { "min": 2, "max": 3 },
+    "culture": { "min": 1, "max": 2 },
+    "personal": { "min": 0, "max": 1 }
+  },
+  "surprise_quota": 0.15,
+  "total_stories": { "min": 8, "max": 12 },
+  "last_updated": "2026-02-18T00:00:00Z",
+  "version": 1
+}
