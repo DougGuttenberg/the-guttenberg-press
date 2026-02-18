@@ -1,0 +1,43 @@
+name: Deliver Paper
+
+on:
+  schedule:
+    - cron: '30 12 * * *'
+  workflow_dispatch:
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  GMAIL_USER: ${{ secrets.GMAIL_USER }}
+  GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+  DOUG_EMAIL: ${{ secrets.DOUG_EMAIL }}
+  CLAUDE_MODEL: claude-sonnet-4-20250514
+  TZ: America/New_York
+  NODE_ENV: production
+  LOG_LEVEL: info
+
+jobs:
+  deliver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: mkdir -p data/papers data/feedback data/queue data/logs
+      - uses: actions/download-artifact@v4
+        with:
+          name: daily-paper-data
+          path: data/
+      - run: node src/run-delivery.js
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-paper-data
+          path: data/
+          retention-days: 30
+          overwrite: true
