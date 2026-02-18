@@ -1,4 +1,4 @@
-import { batchProcess } from '../lib/claude-client.js';
+import { askClaudeJSON } from '../lib/claude-client.js';
 import { createLogger } from '../lib/logger.js';
 
 const logger = createLogger('normalize');
@@ -13,7 +13,7 @@ const logger = createLogger('normalize');
  * @returns {Promise<Object>} Normalized assertions with metadata
  */
 export default async function normalize(articlesData) {
-  const { articles, scores, count, timestamp } = articlesData;
+  const { articles, count, timestamp } = articlesData;
 
   if (!articles || !Array.isArray(articles) || articles.length === 0) {
     logger.warn('No articles provided for normalization');
@@ -35,10 +35,8 @@ export default async function normalize(articlesData) {
       logger.info(`Normalizing batch ${batchIndex}/${totalBatches}`);
 
       const batch = articles.slice(i, i + batchSize);
-      const batchScores = scores.slice(i, i + batchSize);
-
       try {
-        const batchAssertions = await processBatch(batch, batchScores);
+        const batchAssertions = await processBatch(batch);
         allAssertions.push(...batchAssertions);
       } catch (error) {
         logger.warn(
@@ -70,37 +68,35 @@ export default async function normalize(articlesData) {
  * @param {Array} batchScores - Relevance scores for articles in batch
  * @returns {Promise<Array>} Array of assertion objects
  */
-async function processBatch(batch, batchScores) {
+async function processBatch(batch) {
   const systemPrompt = `You are an editorial assistant for a senior advertising/creative-tech executive. Extract precise factual assertions that reveal system-level shifts, early signals, and cross-domain connections. Avoid surface-level summaries.`;
 
-  const batchData = batch.map((article, index) => ({
+  const batchData = batch.map((article) => ({
     source: article.source || 'Unknown',
     title: article.title || 'Untitled',
     content: (article.content || '').substring(0, 2000),
     category: article.category || 'uncategorized',
     manual_send: article.manual_send || false,
-    relevance_score: batchScores[index] || 0,
   }));
 
   const userPrompt = buildPrompt(batchData);
 
   try {
-    const response = await batchProcess(
-      [
-        {
-          role: 'user',
-          content: userPrompt,
-        },
-      ],
-      {
-        system: systemPrompt,
-        temperature: 0.7,
-        max_tokens: 2000,
-      }
+    const response = await askClaudeJSON(userPrompt, {
+      system: systemPrompt,
+      temperature: 0.7,
+      maxTokens: 2000,
+    });
+
+    // askClaudeJSON returns parsed JSON directly
+    const assertions = Array.isArray(response) ? response : [];
+
+    // Validate assertions have required fields
+    const validatedAssertions = assertions.filter((a) =>
+      a.assertion && typeof a.assertion === 'string' && a.assertion.length > 0
     );
 
-    const assertions = parseAssertions(response, batch);
-    return assertions;
+    return validatedAssertions;
   } catch (error) {
     logger.error(`Error processing batch: ${error.message}`);
     throw error;
@@ -121,7 +117,6 @@ Source: ${article.source}
 Title: ${article.title}
 Category: ${article.category}
 Manual Send: ${article.manual_send}
-Relevance Score: ${article.relevance_score}
 Content: ${article.content}
 `
     )
@@ -153,43 +148,3 @@ Return a JSON array with this structure:
 Return ONLY the JSON array, no additional text.`;
 }
 
-/**
- * Parse assertions from Claude response and enrich with article metadata
- * @param {string} response - Raw response from Claude
- * @param {Array} articles - Original article objects
- * @returns {Array} Array of assertion objects
- */
-function parseAssertions(response, articles) {
-  try {
-    // Extract JSON from response (handle potential markdown code blocks)
-    let jsonStr = response.trim();
-
-    // Remove markdown code blocks if present
-    if (jsonStr.startsWith('```json')) {
-      jsonStr = jsonStr.replace(/^```json\n?/, '').replace(/\n?```$/, '');
-    } else if (jsonStr.startsWith('```')) {
-      jsonStr = jsonStr.replace(/^```\n?/, '').replace(/\n?```$/, '');
-    }
-
-    const parsed = JSON.parse(jsonStr);
-
-    if (!Array.isArray(parsed)) {
-      throw new Error('Response is not an array');
-    }
-
-    // Validate and clean assertions
-    const validatedAssertions = parsed.filter((assertion) => {
-      return (
-        assertion.assertion &&
-        typeof assertion.assertion === 'string' &&
-        assertion.assertion.length > 0
-      );
-    });
-
-    return validatedAssertions;
-  } catch (error) {
-    logger.warn(`Failed to parse assertions: ${error.message}`);
-    logger.debug(`Raw response was: ${response.substring(0, 200)}`);
-    return [];
-  }
-}
