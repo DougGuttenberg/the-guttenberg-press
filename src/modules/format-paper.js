@@ -15,15 +15,15 @@ function buildSection(title, emoji, stories) {
 
   let section = `\n${emoji} ${title}\n\n`;
   stories.forEach((story, index) => {
-    section += `${index + 1}. ${story.headline}\n`;
-    section += `   → Why: ${story.why_this_matters}\n`;
-    section += `   💡 ${story.confidence_label} | ${story.source_count} sources\n`;
+    section += `${index + 1}. ${story.headline}\n\n`;
+    section += `${story.why_this_matters}\n\n`;
+    section += `💡 ${story.confidence_label} | ${story.source_count} sources\n`;
     if (story.sources && story.sources.length > 0) {
       story.sources.forEach(src => {
-        section += `   📰 ${src.name}: ${src.url}\n`;
+        section += `📰 ${src.name}: ${src.url}\n`;
       });
     }
-    section += `\n`;
+    section += `\n${'─'.repeat(27)}\n\n`;
   });
 
   return section;
@@ -47,15 +47,15 @@ function buildSportsSection(title, emoji, stories, scoresData) {
   }
 
   stories.forEach((story, index) => {
-    section += `${index + 1}. ${story.headline}\n`;
-    section += `   → Why: ${story.why_this_matters}\n`;
-    section += `   💡 ${story.confidence_label} | ${story.source_count} sources\n`;
+    section += `${index + 1}. ${story.headline}\n\n`;
+    section += `${story.why_this_matters}\n\n`;
+    section += `💡 ${story.confidence_label} | ${story.source_count} sources\n`;
     if (story.sources && story.sources.length > 0) {
       story.sources.forEach(src => {
-        section += `   📰 ${src.name}: ${src.url}\n`;
+        section += `📰 ${src.name}: ${src.url}\n`;
       });
     }
-    section += `\n`;
+    section += `\n${'─'.repeat(27)}\n\n`;
   });
 
   return section;
@@ -94,12 +94,12 @@ function buildTextPaper(rankedData, scoresData) {
   if (selections.surprise_pick) {
     paper += `\n✨ SURPRISE PICK\n\n`;
     const surprise = selections.surprise_pick;
-    paper += `${surprise.headline}\n`;
-    paper += `   → Why: ${surprise.why_this_matters}\n`;
-    paper += `   💡 ${surprise.confidence_label} | ${surprise.source_count} sources\n`;
+    paper += `${surprise.headline}\n\n`;
+    paper += `${surprise.why_this_matters}\n\n`;
+    paper += `💡 ${surprise.confidence_label} | ${surprise.source_count} sources\n`;
     if (surprise.sources && surprise.sources.length > 0) {
       surprise.sources.forEach(src => {
-        paper += `   📰 ${src.name}: ${src.url}\n`;
+        paper += `📰 ${src.name}: ${src.url}\n`;
       });
     }
     paper += `\n`;
@@ -175,11 +175,12 @@ function buildHtmlPaper(rankedData, scoresData) {
         color: #666;
         margin: 8px 0;
       }
-      .story-why {
+      .story-summary {
         font-size: 14px;
-        margin: 10px 0;
-        font-style: italic;
-        color: #555;
+        margin: 12px 0;
+        color: #444;
+        line-height: 1.7;
+        white-space: pre-line;
       }
       .story-link {
         display: inline-block;
@@ -257,7 +258,7 @@ function buildHtmlPaper(rankedData, scoresData) {
       html += `
       <div class="story">
         <h3>${index + 1}. ${story.headline}</h3>
-        <div class="story-why">→ Why: ${story.why_this_matters}</div>
+        <div class="story-summary">${story.why_this_matters}</div>
         <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} sources</div>
 `;
       if (story.sources && story.sources.length > 0) {
@@ -302,7 +303,7 @@ function buildHtmlPaper(rankedData, scoresData) {
       html += `
       <div class="story">
         <h3>${index + 1}. ${story.headline}</h3>
-        <div class="story-why">→ Why: ${story.why_this_matters}</div>
+        <div class="story-summary">${story.why_this_matters}</div>
         <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} sources</div>
 `;
       if (story.sources && story.sources.length > 0) {
@@ -333,7 +334,7 @@ function buildHtmlPaper(rankedData, scoresData) {
     html += `<div class="surprise">
       <h3>✨ SURPRISE PICK</h3>
       <p><strong>${surprise.headline}</strong></p>
-      <div class="story-why">→ Why: ${surprise.why_this_matters}</div>
+      <div class="story-summary">${surprise.why_this_matters}</div>
       <div class="story-meta">💡 ${surprise.confidence_label} | ${surprise.source_count} sources</div>
 `;
     if (surprise.sources && surprise.sources.length > 0) {
