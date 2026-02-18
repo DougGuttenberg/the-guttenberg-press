@@ -13,7 +13,7 @@ const DOMAIN_CATEGORIES = {
 };
 
 function categorizeDomain(assertion) {
-  const text = `${assertion.title} ${assertion.content}`.toLowerCase();
+  const text = `${assertion.assertion || ''} ${assertion.source_article || ''} ${(assertion.domains || []).join(' ')}`.toLowerCase();
 
   for (const [category, keywords] of Object.entries(DOMAIN_CATEGORIES)) {
     if (keywords.some(kw => text.includes(kw))) {
@@ -26,7 +26,7 @@ function categorizeDomain(assertion) {
 
 function buildAssertionsList(assertions) {
   return assertions
-    .map((assertion, idx) => `${idx}. "${assertion.title}" (${assertion.source.domain})\n   Content: ${assertion.content}`)
+    .map((assertion, idx) => `${idx}. "${assertion.source_article || assertion.assertion}" (${assertion.source_name || 'Unknown'})\n   Assertion: ${assertion.assertion}\n   Domains: ${(assertion.domains || []).join(', ')}`)
     .join('\n');
 }
 
@@ -52,7 +52,7 @@ Return a JSON array where each cluster has:
 
 Return ONLY valid JSON array, no other text.`;
 
-  const clusterResult = await askClaudeJSON(prompt, SYSTEM_PROMPT);
+  const clusterResult = await askClaudeJSON(prompt, { system: SYSTEM_PROMPT });
 
   if (!Array.isArray(clusterResult)) {
     logger.warn(`Expected array from Claude, got: ${typeof clusterResult}`);
@@ -119,8 +119,8 @@ async function clusterStories(assertionsData) {
       .map(idx => assertions[idx])
       .filter(Boolean);
 
-    const sources = [...new Set(clusterAssertions.map(a => a.source.name))];
-    const domains = [...new Set(clusterAssertions.map(a => a.source.domain))];
+    const sources = [...new Set(clusterAssertions.map(a => a.source_name || 'Unknown'))];
+    const domains = [...new Set(clusterAssertions.flatMap(a => a.domains || []))];
 
     const hasManualBoost = clusterAssertions.some(a => a.manual_send === true);
 
