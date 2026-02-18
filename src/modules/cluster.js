@@ -46,16 +46,20 @@ HEADLINE RULES:
 - Include the key WHO/WHAT. Use names, companies, numbers.
 - If a cluster is about a broad trend with no single event, lead with the most concrete example.
 
-WHY_THIS_MATTERS RULES:
-- 1-2 sentences explaining significance for a senior ad/creative-tech executive
-- Be specific about implications, not generic ("could reshape X")
+SUMMARY RULES:
+- Write 2-3 paragraphs (150-250 words) synthesizing what the sources collectively reveal.
+- Paragraph 1: What happened — the key facts, names, numbers, dates drawn from across the sources.
+- Paragraph 2: Why it matters — concrete implications for advertising, creative tech, or the reader's world. Connect dots between sources if they reveal different angles.
+- Paragraph 3 (optional): What to watch — upcoming decisions, dates, or signals that would confirm or change this story.
+- Use specific details from the assertions. Never be vague. If sources disagree, say so.
+- Write for a senior advertising/creative-tech executive who already knows the basics. Don't explain what AI is. Get to the interesting part fast.
 
 Return a JSON array:
 [
   {
     "assertion_indices": [indices that belong together],
     "headline": "specific news headline with names and facts",
-    "why_this_matters": "1-2 sentences on concrete significance"
+    "why_this_matters": "2-3 paragraph synthesis as described above"
   }
 ]
 
