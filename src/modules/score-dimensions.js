@@ -1,4 +1,4 @@
-import { parallelAskJSON } from '../lib/claude-client.js';
+import { askClaudeJSON } from '../lib/claude-client.js';
 import { createLogger } from '../lib/logger.js';
 
 const logger = createLogger('score-dimensions');
@@ -131,7 +131,7 @@ async function scoreCluster(cluster) {
 
   const lensPromises = Object.entries(LENS_DEFINITIONS).map(([lensKey, lens]) => {
     const lensPrompt = lens.prompt(cluster);
-    return parallelAskJSON(lensPrompt, lens.systemPrompt)
+    return askClaudeJSON(lensPrompt, { system: lens.systemPrompt })
       .then(result => ({
         [lensKey]: result,
       }))
