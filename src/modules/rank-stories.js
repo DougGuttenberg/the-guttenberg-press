@@ -180,11 +180,16 @@ function buildSelectedStory(cluster, rank) {
     final_score: cluster.final_score,
     confidence_label: cluster.confidence_label,
     why_this_matters: cluster.why_this_matters || 'This story represents a significant development.',
-    links: {
-      primary: cluster.assertions?.[0]?.source_url || null,
-      analysis: cluster.assertions?.[1]?.source_url || null,
-      community: cluster.assertions?.[2]?.source_url || null
-    },
+    sources: (cluster.assertions || [])
+      .filter(a => a.source_url)
+      .reduce((acc, a) => {
+        const url = a.source_url;
+        if (!acc.some(s => s.url === url)) {
+          acc.push({ name: a.source_name || 'Source', url });
+        }
+        return acc;
+      }, [])
+      .slice(0, 5),
     source_count: cluster.source_count || (cluster.assertions ? cluster.assertions.length : 0),
     domains: cluster.domains || [],
     dimension_scores: cluster.dimension_scores
