@@ -1,0 +1,112 @@
+[
+  {
+    "source": "TechCrunch",
+    "title": "OpenAI Launches GPT-5 with Reasoning Capabilities",
+    "link": "https://techcrunch.com/2024/02/gpt5-reasoning",
+    "published": "2024-02-18T08:30:00Z",
+    "content": "OpenAI announced the release of GPT-5, featuring advanced reasoning capabilities that allow the model to work through complex problems step-by-step before providing answers. The model demonstrates improvements in mathematics, coding, and logical deduction. Early benchmarks show 40% improvement in reasoning tasks compared to GPT-4.",
+    "retrieved_at": "2024-02-18T10:15:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "AI"
+  },
+  {
+    "source": "Bloomberg",
+    "title": "Tech Stock Rally Continues Despite Rate Hikes",
+    "link": "https://bloomberg.com/tech-stocks-rally-2024",
+    "published": "2024-02-18T09:00:00Z",
+    "content": "Major technology stocks surged on Friday following Fed announcements suggesting a potential pause in interest rate increases. Nasdaq composite rose 2.3% as investors reassess valuations. Apple, Microsoft, and Nvidia led the gains, with market analysts crediting renewed optimism about AI profitability.",
+    "retrieved_at": "2024-02-18T10:20:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "business"
+  },
+  {
+    "source": "ESPN",
+    "title": "Lakers Edge Warriors in Overtime Thriller",
+    "link": "https://espn.com/nba/lakers-warriors-2024",
+    "published": "2024-02-18T02:45:00Z",
+    "content": "The Los Angeles Lakers defeated the Golden State Warriors 128-126 in overtime in a thrilling West Coast showdown. LeBron James scored 32 points and grabbed 11 rebounds, while Stephen Curry's late three-pointer fell just short. The victory improves LA's playoff positioning with 20 games remaining.",
+    "retrieved_at": "2024-02-18T03:30:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "sports"
+  },
+  {
+    "source": "The New York Times",
+    "title": "AI Art Debate: Can Machines Create Copyright-Protected Works?",
+    "link": "https://nyt.com/ai-copyright-debate-2024",
+    "published": "2024-02-17T18:00:00Z",
+    "content": "Legal experts and artists are divided on whether AI-generated artwork should receive copyright protection. Recent court rulings suggest that works created without human authorship may not qualify for copyright. Industry groups are calling for legislative clarity on AI-generated intellectual property rights.",
+    "retrieved_at": "2024-02-18T10:10:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "culture"
+  },
+  {
+    "source": "Reuters",
+    "title": "Global AI Safety Institute Proposes New Standards",
+    "link": "https://reuters.com/ai-safety-standards-2024",
+    "published": "2024-02-18T07:15:00Z",
+    "content": "An international coalition of AI researchers and industry leaders has unveiled comprehensive safety guidelines for large language models. The proposal includes rigorous testing protocols, red-teaming requirements, and mandatory disclosure of model capabilities. Industry adoption is expected by Q3 2024.",
+    "retrieved_at": "2024-02-18T09:45:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "AI"
+  },
+  {
+    "source": "Financial Times",
+    "title": "Europe Accelerates AI Regulation Framework",
+    "link": "https://ft.com/eu-ai-act-progress",
+    "published": "2024-02-18T06:30:00Z",
+    "content": "The European Union continues advancing its AI Act implementation, moving toward stricter regulations for high-risk AI systems. The framework requires mandatory human oversight for critical applications. Brussels expects full compliance from member states by early 2025.",
+    "retrieved_at": "2024-02-18T08:50:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "business"
+  },
+  {
+    "source": "Rolling Stone",
+    "title": "Grammy Winners Announce AI-Free Creative Commitment",
+    "link": "https://rollingstone.com/grammys-ai-free-2024",
+    "published": "2024-02-17T20:00:00Z",
+    "content": "Several Grammy Award winners pledged to create music without AI tools, citing concerns about artistic authenticity and musician livelihoods. The movement has gained support from major record labels and music advocacy groups. This marks a significant stance as AI music generation tools become increasingly sophisticated.",
+    "retrieved_at": "2024-02-18T10:05:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "culture"
+  },
+  {
+    "source": "Citius by Doug",
+    "title": "Quarterly Earnings Alert: Watch These Tech Drops",
+    "link": "https://internal-inbox/doug-q1-earnings",
+    "published": "2024-02-18T11:00:00Z",
+    "content": "Doug's personal note: Keep an eye on Nvidia, AMD, and Intel earnings next week. I'm seeing unusual options activity on Nvidia calls. The consensus is expecting strong AI chip demand numbers. Could be a significant week for tech valuations.",
+    "retrieved_at": "2024-02-18T11:00:00Z",
+    "manual_send": true,
+    "doug_note": "This is from my trading contacts - we should flag the earnings plays prominently",
+    "category": "business"
+  },
+  {
+    "source": "Washington Post",
+    "title": "Healthcare Sector Embraces AI Diagnostic Tools",
+    "link": "https://washingtonpost.com/healthcare-ai-2024",
+    "published": "2024-02-18T07:45:00Z",
+    "content": "Major hospital networks are integrating AI-powered diagnostic systems to improve patient outcomes and reduce medical errors. Early results show a 15% reduction in diagnostic delays and improved accuracy in imaging analysis. The shift represents a major evolution in clinical practice standards.",
+    "retrieved_at": "2024-02-18T10:00:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "AI"
+  },
+  {
+    "source": "CNBC",
+    "title": "Fed Signals Pause in Rate Hikes, Markets Respond",
+    "link": "https://cnbc.com/fed-rate-pause-2024",
+    "published": "2024-02-18T10:00:00Z",
+    "content": "Federal Reserve officials hinted at a potential pause in the interest rate hiking cycle during recent remarks. This sparked optimism in equity markets, particularly in growth-heavy sectors like technology. Treasury yields dropped significantly as investors repositioned their portfolios for lower future rates.",
+    "retrieved_at": "2024-02-18T10:35:00Z",
+    "manual_send": false,
+    "doug_note": null,
+    "category": "business"
+  }
+]

@@ -1,0 +1,252 @@
+[
+  {
+    "assertion": "GPT-5 demonstrates 40% improvement in reasoning tasks compared to GPT-4",
+    "evidence_type": "benchmark",
+    "confidence": 0.92,
+    "domains": ["AI", "Technology"],
+    "source_article": 0,
+    "source_name": "TechCrunch",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "OpenAI's GPT-5 enables step-by-step problem solving before providing answers",
+    "evidence_type": "feature",
+    "confidence": 0.95,
+    "domains": ["AI"],
+    "source_article": 0,
+    "source_name": "TechCrunch",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Tech stocks rallied 2.3% following Fed rate pause announcement",
+    "evidence_type": "market_data",
+    "confidence": 0.98,
+    "domains": ["Business", "Technology", "Markets"],
+    "source_article": 1,
+    "source_name": "Bloomberg",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Apple, Microsoft, and Nvidia led tech stock gains due to AI profitability optimism",
+    "evidence_type": "market_observation",
+    "confidence": 0.88,
+    "domains": ["Business", "Technology"],
+    "source_article": 1,
+    "source_name": "Bloomberg",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Lakers defeated Warriors 128-126 in overtime with LeBron's 32 points and 11 rebounds",
+    "evidence_type": "sports_result",
+    "confidence": 0.99,
+    "domains": ["Sports", "Basketball"],
+    "source_article": 2,
+    "source_name": "ESPN",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Legal debate exists over whether AI-generated artwork qualifies for copyright protection",
+    "evidence_type": "legal_analysis",
+    "confidence": 0.91,
+    "domains": ["Law", "AI", "Culture"],
+    "source_article": 3,
+    "source_name": "The New York Times",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Recent court rulings suggest AI-created works without human authorship lack copyright protection",
+    "evidence_type": "legal_precedent",
+    "confidence": 0.89,
+    "domains": ["Law", "AI"],
+    "source_article": 3,
+    "source_name": "The New York Times",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Global AI Safety Institute proposes comprehensive standards including red-teaming requirements",
+    "evidence_type": "policy_announcement",
+    "confidence": 0.94,
+    "domains": ["AI", "Safety", "Policy"],
+    "source_article": 4,
+    "source_name": "Reuters",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "AI safety standards expect industry adoption by Q3 2024",
+    "evidence_type": "policy_timeline",
+    "confidence": 0.85,
+    "domains": ["AI", "Policy"],
+    "source_article": 4,
+    "source_name": "Reuters",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "EU AI Act implementation requires mandatory human oversight for high-risk AI systems",
+    "evidence_type": "regulation",
+    "confidence": 0.96,
+    "domains": ["Regulation", "AI", "Europe"],
+    "source_article": 5,
+    "source_name": "Financial Times",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "EU expects full AI regulation compliance by early 2025",
+    "evidence_type": "regulatory_timeline",
+    "confidence": 0.90,
+    "domains": ["Regulation", "Europe"],
+    "source_article": 5,
+    "source_name": "Financial Times",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Grammy winners committed to AI-free music creation citing authenticity concerns",
+    "evidence_type": "industry_trend",
+    "confidence": 0.92,
+    "domains": ["Music", "Culture", "AI"],
+    "source_article": 6,
+    "source_name": "Rolling Stone",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "AI-free music pledge has gained support from major record labels",
+    "evidence_type": "industry_adoption",
+    "confidence": 0.87,
+    "domains": ["Music", "Industry"],
+    "source_article": 6,
+    "source_name": "Rolling Stone",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Nvidia, AMD, and Intel quarterly earnings expected next week with strong AI chip demand",
+    "evidence_type": "insider_observation",
+    "confidence": 0.78,
+    "domains": ["Business", "Technology", "Markets"],
+    "source_article": 7,
+    "source_name": "Citius by Doug",
+    "manual_send": true,
+    "doug_note": "From Doug's trading contacts - unusual options activity on Nvidia"
+  },
+  {
+    "assertion": "Unusual options activity detected on Nvidia call options ahead of earnings",
+    "evidence_type": "market_signal",
+    "confidence": 0.75,
+    "domains": ["Markets", "Technology"],
+    "source_article": 7,
+    "source_name": "Citius by Doug",
+    "manual_send": true,
+    "doug_note": "Direct observation from trading contacts"
+  },
+  {
+    "assertion": "Hospital networks integrating AI diagnostic systems show 15% reduction in diagnostic delays",
+    "evidence_type": "performance_metric",
+    "confidence": 0.93,
+    "domains": ["Healthcare", "AI", "Technology"],
+    "source_article": 8,
+    "source_name": "Washington Post",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "AI diagnostic tools improve accuracy in medical imaging analysis",
+    "evidence_type": "clinical_outcome",
+    "confidence": 0.91,
+    "domains": ["Healthcare", "AI"],
+    "source_article": 8,
+    "source_name": "Washington Post",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "AI adoption in healthcare represents major evolution in clinical practice standards",
+    "evidence_type": "trend_analysis",
+    "confidence": 0.86,
+    "domains": ["Healthcare", "Technology"],
+    "source_article": 8,
+    "source_name": "Washington Post",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Federal Reserve officials signaled potential pause in interest rate hiking cycle",
+    "evidence_type": "official_statement",
+    "confidence": 0.97,
+    "domains": ["Business", "Economics", "Markets"],
+    "source_article": 9,
+    "source_name": "CNBC",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Fed rate pause signals triggered optimism in growth-heavy sectors",
+    "evidence_type": "market_reaction",
+    "confidence": 0.89,
+    "domains": ["Markets", "Business"],
+    "source_article": 9,
+    "source_name": "CNBC",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Treasury yields dropped following Fed rate pause signals",
+    "evidence_type": "market_data",
+    "confidence": 0.96,
+    "domains": ["Business", "Markets"],
+    "source_article": 9,
+    "source_name": "CNBC",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "AI reasoning capabilities represent next frontier in LLM development",
+    "evidence_type": "industry_analysis",
+    "confidence": 0.82,
+    "domains": ["AI", "Technology"],
+    "source_article": 0,
+    "source_name": "TechCrunch",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Technology sector outperforming broader markets due to AI monetization potential",
+    "evidence_type": "sector_performance",
+    "confidence": 0.84,
+    "domains": ["Business", "Technology", "Markets"],
+    "source_article": 1,
+    "source_name": "Bloomberg",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Global policy momentum accelerating toward AI regulation standardization",
+    "evidence_type": "policy_trend",
+    "confidence": 0.88,
+    "domains": ["Policy", "AI", "Regulation"],
+    "source_article": 5,
+    "source_name": "Financial Times",
+    "manual_send": false,
+    "doug_note": null
+  },
+  {
+    "assertion": "Creative industries facing transformation through AI tools adoption",
+    "evidence_type": "industry_shift",
+    "confidence": 0.85,
+    "domains": ["Culture", "Technology", "Industry"],
+    "source_article": 6,
+    "source_name": "Rolling Stone",
+    "manual_send": false,
+    "doug_note": null
+  }
+]

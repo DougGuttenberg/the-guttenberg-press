@@ -1,0 +1,39 @@
+{
+  "name": "daily-paper",
+  "version": "1.0.0",
+  "description": "Doug's personalized daily newspaper system — AI-powered editorial engine",
+  "author": "Doug Guttenberg",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node src/start-all.js",
+    "nightly": "node src/run-nightly.js",
+    "deliver": "node src/run-delivery.js",
+    "inbox": "node src/run-inbox-monitor.js",
+    "manual": "node src/run-nightly.js && node src/run-delivery.js",
+    "test": "node tests/test-modules.js",
+    "test-pipeline": "node tests/test-full-pipeline.js",
+    "test-claude-key": "node scripts/test-claude-key.js",
+    "send-test": "node scripts/send-test-paper.js",
+    "setup-launchd": "node scripts/setup-launchd.js",
+    "status": "node scripts/status.js",
+    "logs": "node scripts/view-logs.js",
+    "stop": "node scripts/stop-launchd.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "rss-parser": "^3.13.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "nodemailer": "^6.9.0",
+    "imap-simple": "^5.1.0",
+    "node-cron": "^3.0.3",
+    "dotenv": "^16.4.0",
+    "axios": "^1.7.0",
+    "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.1.0",
+    "mailparser": "^3.7.0"
+  }
+}
