@@ -13,13 +13,18 @@ const DEFAULT_WEIGHTS = {
 };
 
 const DEFAULT_CONFIG = {
-  threshold: 7.0,
+  threshold_front_page: 7.0,
+  threshold_business: 5.5,
+  threshold_sports: 5.0,
+  threshold_culture: 5.0,
+  threshold_personal: 6.0,
   manual_boost: 2,
   front_page_max: 5,
   business_max: 4,
   sports_max: 3,
   culture_max: 3,
   personal_max: 3,
+  min_total_stories: 8,
   surprise_quota_threshold: 5.0
 };
 
@@ -78,7 +83,7 @@ function selectStoriesBySection(sortedClusters, config) {
   // Front page - top stories across all domains
   for (const cluster of sortedClusters) {
     if (selections.front_page.length >= config.front_page_max) break;
-    if (cluster.final_score >= config.threshold) {
+    if (cluster.final_score >= config.threshold_front_page) {
       selections.front_page.push({ ...cluster, rank: rank++ });
       usedClusterIds.add(cluster.cluster_id);
     }
@@ -89,7 +94,7 @@ function selectStoriesBySection(sortedClusters, config) {
     if (selections.business.length >= config.business_max) break;
     if (usedClusterIds.has(cluster.cluster_id)) continue;
     const domains = cluster.domains || [];
-    if ((domains.includes('ai') || domains.includes('business')) && cluster.final_score >= config.threshold) {
+    if ((domains.includes('ai') || domains.includes('business')) && cluster.final_score >= config.threshold_business) {
       selections.business.push({ ...cluster, rank: rank++ });
       usedClusterIds.add(cluster.cluster_id);
     }
@@ -100,7 +105,7 @@ function selectStoriesBySection(sortedClusters, config) {
     if (selections.sports.length >= config.sports_max) break;
     if (usedClusterIds.has(cluster.cluster_id)) continue;
     const domains = cluster.domains || [];
-    if (domains.includes('sports') && cluster.final_score >= config.threshold) {
+    if (domains.includes('sports') && cluster.final_score >= config.threshold_sports) {
       selections.sports.push({ ...cluster, rank: rank++ });
       usedClusterIds.add(cluster.cluster_id);
     }
@@ -111,7 +116,7 @@ function selectStoriesBySection(sortedClusters, config) {
     if (selections.culture.length >= config.culture_max) break;
     if (usedClusterIds.has(cluster.cluster_id)) continue;
     const domains = cluster.domains || [];
-    if (domains.includes('culture') && cluster.final_score >= config.threshold) {
+    if (domains.includes('culture') && cluster.final_score >= config.threshold_culture) {
       selections.culture.push({ ...cluster, rank: rank++ });
       usedClusterIds.add(cluster.cluster_id);
     }
@@ -122,7 +127,7 @@ function selectStoriesBySection(sortedClusters, config) {
     if (selections.personal.length >= config.personal_max) break;
     if (usedClusterIds.has(cluster.cluster_id)) continue;
     const domains = cluster.domains || [];
-    if (domains.includes('personal') && cluster.final_score >= config.threshold) {
+    if (domains.includes('personal') && cluster.final_score >= config.threshold_personal) {
       selections.personal.push({ ...cluster, rank: rank++ });
       usedClusterIds.add(cluster.cluster_id);
     }
@@ -206,13 +211,17 @@ export default async function rankStories(scoredData) {
       logger.info(`Loaded custom weights from config: ${JSON.stringify(weights)}`);
     }
     if (judgmentModel && judgmentModel.thresholds) {
-      // Map threshold keys to config keys
+      // Map threshold keys to config keys (per-section)
       config = {
         ...DEFAULT_CONFIG,
-        threshold: judgmentModel.thresholds.front_page || DEFAULT_CONFIG.threshold,
+        threshold_front_page: judgmentModel.thresholds.front_page || DEFAULT_CONFIG.threshold_front_page,
+        threshold_business: judgmentModel.thresholds.business_section || DEFAULT_CONFIG.threshold_business,
+        threshold_sports: judgmentModel.thresholds.sports_section || DEFAULT_CONFIG.threshold_sports,
+        threshold_culture: judgmentModel.thresholds.culture_section || DEFAULT_CONFIG.threshold_culture,
+        threshold_personal: judgmentModel.thresholds.personal_section || DEFAULT_CONFIG.threshold_personal,
         manual_boost: judgmentModel.weights?.manual_boost || DEFAULT_CONFIG.manual_boost,
       };
-      logger.info(`Loaded thresholds from config: threshold=${config.threshold}`);
+      logger.info(`Loaded per-section thresholds: front=${config.threshold_front_page}, biz=${config.threshold_business}, sports=${config.threshold_sports}, culture=${config.threshold_culture}, personal=${config.threshold_personal}`);
     }
     if (judgmentModel && judgmentModel.section_limits) {
       const limits = judgmentModel.section_limits;
@@ -251,36 +260,57 @@ export default async function rankStories(scoredData) {
   // Select stories by section
   let { selections, usedClusterIds, nextRank } = selectStoriesBySection(sortedClusters, config);
 
-  // Fallback: if no stories were selected (thresholds too high), take the top stories anyway
+  // Fallback: if not enough stories were selected, fill up from the top-scoring remaining clusters
   const totalSelected = Object.values(selections).reduce((acc, s) => acc + s.length, 0);
-  if (totalSelected === 0 && sortedClusters.length > 0) {
-    logger.warn(`No stories passed threshold (${config.threshold}). Falling back to top stories.`);
-    let rank = 1;
-    usedClusterIds = new Set();
-    // Take top 4 as front page
-    for (const cluster of sortedClusters.slice(0, Math.min(4, sortedClusters.length))) {
-      selections.front_page.push({ ...cluster, rank: rank++ });
-      usedClusterIds.add(cluster.cluster_id);
-    }
-    // Fill remaining sections from unused clusters
-    for (const cluster of sortedClusters) {
-      if (usedClusterIds.has(cluster.cluster_id)) continue;
-      const domains = cluster.domains || [];
-      if ((domains.includes('ai') || domains.includes('business')) && selections.business.length < config.business_max) {
-        selections.business.push({ ...cluster, rank: rank++ });
-        usedClusterIds.add(cluster.cluster_id);
-      } else if (domains.includes('sports') && selections.sports.length < config.sports_max) {
-        selections.sports.push({ ...cluster, rank: rank++ });
-        usedClusterIds.add(cluster.cluster_id);
-      } else if (domains.includes('culture') && selections.culture.length < config.culture_max) {
-        selections.culture.push({ ...cluster, rank: rank++ });
-        usedClusterIds.add(cluster.cluster_id);
-      } else if (domains.includes('personal') && selections.personal.length < config.personal_max) {
-        selections.personal.push({ ...cluster, rank: rank++ });
+  if (totalSelected < config.min_total_stories && sortedClusters.length > 0) {
+    logger.warn(`Only ${totalSelected} stories passed thresholds (need ${config.min_total_stories}). Filling from top remaining clusters.`);
+
+    // If literally zero, seed front page first
+    if (totalSelected === 0) {
+      for (const cluster of sortedClusters.slice(0, Math.min(config.front_page_max, sortedClusters.length))) {
+        if (usedClusterIds.has(cluster.cluster_id)) continue;
+        selections.front_page.push({ ...cluster, rank: nextRank++ });
         usedClusterIds.add(cluster.cluster_id);
       }
     }
-    nextRank = rank;
+
+    // Fill remaining sections from unused clusters by domain match (no threshold)
+    for (const cluster of sortedClusters) {
+      if (usedClusterIds.has(cluster.cluster_id)) continue;
+      const domains = cluster.domains || [];
+      let placed = false;
+
+      if ((domains.includes('ai') || domains.includes('business')) && selections.business.length < config.business_max) {
+        selections.business.push({ ...cluster, rank: nextRank++ });
+        usedClusterIds.add(cluster.cluster_id);
+        placed = true;
+      } else if (domains.includes('sports') && selections.sports.length < config.sports_max) {
+        selections.sports.push({ ...cluster, rank: nextRank++ });
+        usedClusterIds.add(cluster.cluster_id);
+        placed = true;
+      } else if (domains.includes('culture') && selections.culture.length < config.culture_max) {
+        selections.culture.push({ ...cluster, rank: nextRank++ });
+        usedClusterIds.add(cluster.cluster_id);
+        placed = true;
+      } else if (domains.includes('personal') && selections.personal.length < config.personal_max) {
+        selections.personal.push({ ...cluster, rank: nextRank++ });
+        usedClusterIds.add(cluster.cluster_id);
+        placed = true;
+      }
+
+      // If it didn't fit a section and front page has room, put it there
+      if (!placed && selections.front_page.length < config.front_page_max) {
+        selections.front_page.push({ ...cluster, rank: nextRank++ });
+        usedClusterIds.add(cluster.cluster_id);
+      }
+
+      // Check if we've reached the minimum
+      const currentTotal = Object.values(selections).reduce((acc, s) => acc + s.length, 0);
+      if (currentTotal >= config.min_total_stories) break;
+    }
+
+    const filledTotal = Object.values(selections).reduce((acc, s) => acc + s.length, 0);
+    logger.info(`After fallback fill: ${filledTotal} total stories selected`);
   }
 
   // Apply surprise quota
