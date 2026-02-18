@@ -69,11 +69,12 @@ export default async function normalize(articlesData) {
  * @returns {Promise<Array>} Array of assertion objects
  */
 async function processBatch(batch) {
-  const systemPrompt = `You are an editorial assistant for a senior advertising/creative-tech executive. Extract precise factual assertions that reveal system-level shifts, early signals, and cross-domain connections. Avoid surface-level summaries.`;
+  const systemPrompt = `You are a sharp news editor extracting concrete, specific facts from articles. Focus on WHAT HAPPENED — names, companies, numbers, dates, decisions, launches, deals. Never produce vague topic summaries like "AI continues to evolve." Every assertion must be a specific, verifiable claim about a real event or development.`;
 
   const batchData = batch.map((article) => ({
     source: article.source || 'Unknown',
     title: article.title || 'Untitled',
+    link: article.link || null,
     content: (article.content || '').substring(0, 2000),
     category: article.category || 'uncategorized',
     manual_send: article.manual_send || false,
@@ -115,6 +116,7 @@ function buildPrompt(batchData) {
 ARTICLE ${index + 1}:
 Source: ${article.source}
 Title: ${article.title}
+URL: ${article.link || 'none'}
 Category: ${article.category}
 Manual Send: ${article.manual_send}
 Content: ${article.content}
@@ -122,29 +124,40 @@ Content: ${article.content}
     )
     .join('\n---\n');
 
-  return `Analyze the following articles and extract 2-5 key factual assertions from each.
+  return `Extract 2-5 specific factual claims from each article. Be CONCRETE — include names, companies, dollar amounts, dates, product names, scores, decisions. Never write vague summaries.
+
+BAD assertion: "AI companies are developing new agent frameworks"
+GOOD assertion: "Anthropic released the Claude Agent SDK on Feb 10, enabling developers to build autonomous AI agents with tool-use capabilities"
+
+BAD assertion: "NFL teams are making roster changes ahead of the draft"
+GOOD assertion: "Jets traded their 2027 second-round pick to the Rams for edge rusher Jared Verse"
 
 ${articlesText}
 
-For each article, identify precise factual claims that reveal:
-- System-level shifts in their domains
-- Early signals of emerging trends
-- Cross-domain connections and implications
+For each article, extract the most newsworthy specific claims.
 
-Return a JSON array with this structure:
+Assign each assertion to its PRIMARY domain — pick the single best fit:
+- "ai" = AI models, tools, companies (Anthropic, OpenAI, Google AI, etc.)
+- "business" = advertising, media, deals, earnings, industry moves
+- "sports" = games, trades, scores, NFL/NBA/MLB, team news
+- "culture" = music, film, food, art, entertainment
+- "personal" = health, productivity, psychology, personal development
+
+Return a JSON array:
 [
   {
-    "assertion": "specific factual claim",
+    "assertion": "specific factual claim with names, numbers, dates",
     "evidence_type": "primary_source|analysis|community_signal",
     "confidence": "high|medium|low",
-    "domains": ["array of relevant domains from: ai, business, sports, culture, personal"],
+    "domains": ["primary_domain"],
     "source_article": "title of the source article",
     "source_name": "name of the news source",
+    "source_url": "URL of the source article or null",
     "manual_send": boolean,
     "doug_note": "optional insight or null"
   }
 ]
 
-Return ONLY the JSON array, no additional text.`;
+Return ONLY the JSON array.`;
 }
 
