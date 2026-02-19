@@ -1,18 +1,68 @@
 import Anthropic from '@anthropic-ai/sdk';
+import OpenAI from 'openai';
 import { createLogger } from './logger.js';
 
 const log = createLogger('claude-client');
 
-let client = null;
+let anthropicClient = null;
+let deepseekClient = null;
 
-function getClient() {
-  if (!client) {
+function getAnthropicClient() {
+  if (!anthropicClient) {
     if (!process.env.ANTHROPIC_API_KEY) {
       throw new Error('ANTHROPIC_API_KEY is not set in environment variables');
     }
-    client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    anthropicClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   }
-  return client;
+  return anthropicClient;
+}
+
+function getDeepSeekClient() {
+  if (!deepseekClient) {
+    if (!process.env.DEEPSEEK_API_KEY) {
+      throw new Error('DEEPSEEK_API_KEY is not set in environment variables');
+    }
+    deepseekClient = new OpenAI({
+      baseURL: 'https://api.deepseek.com',
+      apiKey: process.env.DEEPSEEK_API_KEY,
+    });
+  }
+  return deepseekClient;
+}
+
+/**
+ * Send a prompt via DeepSeek (OpenAI-compatible API)
+ */
+async function askDeepSeek(prompt, options = {}) {
+  const api = getDeepSeekClient();
+  const model = options.model || 'deepseek-chat';
+  const maxTokens = options.maxTokens || 4096;
+  const temperature = options.temperature ?? 0.3;
+
+  const messages = [];
+  if (options.system) {
+    messages.push({ role: 'system', content: options.system });
+  }
+  messages.push({ role: 'user', content: prompt });
+
+  try {
+    log.debug(`Sending request to DeepSeek ${model}`, { promptLength: prompt.length });
+    const response = await api.chat.completions.create({
+      model,
+      max_tokens: maxTokens,
+      temperature,
+      messages,
+    });
+    const text = response.choices[0]?.message?.content || '';
+    log.debug(`DeepSeek response received`, {
+      inputTokens: response.usage?.prompt_tokens,
+      outputTokens: response.usage?.completion_tokens,
+    });
+    return text;
+  } catch (error) {
+    log.error(`DeepSeek API error: ${error.message}`);
+    throw error;
+  }
 }
 
 /**
@@ -23,10 +73,17 @@ function getClient() {
  * @param {string} options.model - Model override
  * @param {number} options.maxTokens - Max tokens
  * @param {number} options.temperature - Temperature
+ * @param {string} options.provider - 'claude' (default) or 'deepseek'
  * @returns {Promise<string>} The text response
  */
 export async function askClaude(prompt, options = {}) {
-  const api = getClient();
+  const provider = options.provider || 'claude';
+
+  if (provider === 'deepseek') {
+    return askDeepSeek(prompt, options);
+  }
+
+  const api = getAnthropicClient();
   const model = options.model || process.env.CLAUDE_MODEL || 'claude-sonnet-4-20250514';
   const maxTokens = options.maxTokens || 4096;
   const temperature = options.temperature ?? 0.3;
@@ -66,7 +123,7 @@ export async function askClaude(prompt, options = {}) {
  * Send a prompt and parse the response as JSON.
  * Handles markdown code fences around JSON.
  * @param {string} prompt
- * @param {object} options
+ * @param {object} options - includes optional provider: 'claude' | 'deepseek'
  * @returns {Promise<object>}
  */
 export async function askClaudeJSON(prompt, options = {}) {
@@ -87,29 +144,31 @@ export async function askClaudeJSON(prompt, options = {}) {
   try {
     return JSON.parse(cleaned);
   } catch (error) {
-    log.error('Failed to parse Claude response as JSON', {
+    const provider = options.provider || 'claude';
+    log.error(`Failed to parse ${provider} response as JSON`, {
       responsePreview: text.substring(0, 200)
     });
-    throw new Error(`Claude response was not valid JSON: ${error.message}`);
+    throw new Error(`${provider} response was not valid JSON: ${error.message}`);
   }
 }
 
 /**
- * Process items in batches with Claude.
+ * Process items in batches with an LLM.
  * @param {Array} items - Items to process
  * @param {number} batchSize - Items per batch
  * @param {function} promptBuilder - (batch) => prompt string
- * @param {object} options - Claude options
+ * @param {object} options - LLM options (includes optional provider)
  * @returns {Promise<Array>} Collected results
  */
 export async function batchProcess(items, batchSize, promptBuilder, options = {}) {
   const results = [];
   const totalBatches = Math.ceil(items.length / batchSize);
+  const provider = options.provider || 'claude';
 
   for (let i = 0; i < items.length; i += batchSize) {
     const batch = items.slice(i, i + batchSize);
     const batchNum = Math.floor(i / batchSize) + 1;
-    log.debug(`Processing batch ${batchNum}/${totalBatches} (${batch.length} items)`);
+    log.debug(`Processing batch ${batchNum}/${totalBatches} (${batch.length} items) via ${provider}`);
 
     const prompt = promptBuilder(batch);
     const result = await askClaudeJSON(prompt, options);
@@ -129,7 +188,7 @@ export async function batchProcess(items, batchSize, promptBuilder, options = {}
 }
 
 /**
- * Run multiple Claude calls in parallel.
+ * Run multiple calls in parallel.
  * @param {Array<{prompt: string, options?: object}>} requests
  * @returns {Promise<Array<string>>}
  */
@@ -140,7 +199,7 @@ export async function parallelAsk(requests) {
 }
 
 /**
- * Run multiple Claude calls in parallel, parse as JSON.
+ * Run multiple calls in parallel, parse as JSON.
  * @param {Array<{prompt: string, options?: object}>} requests
  * @returns {Promise<Array<object>>}
  */

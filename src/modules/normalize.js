@@ -87,6 +87,7 @@ async function processBatch(batch) {
       system: systemPrompt,
       temperature: 0.7,
       maxTokens: 2000,
+      provider: 'deepseek',
     });
 
     // askClaudeJSON returns parsed JSON directly
