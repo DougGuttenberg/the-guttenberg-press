@@ -65,7 +65,10 @@ Return a JSON array:
 
 Return ONLY valid JSON array.`;
 
-  const clusterResult = await askClaudeJSON(prompt, { system: SYSTEM_PROMPT });
+  const clusterResult = await askClaudeJSON(prompt, {
+    system: SYSTEM_PROMPT,
+    maxTokens: 16384,
+  });
 
   if (!Array.isArray(clusterResult)) {
     logger.warn(`Expected array from Claude, got: ${typeof clusterResult}`);
@@ -91,7 +94,12 @@ async function clusterStories(assertionsData) {
   // For small datasets, cluster all at once
   if (assertions.length <= 100) {
     logger.info(`Clustering ${assertions.length} assertions in single batch`);
-    clustersRaw = await clusterAssertionGroup(assertions, 'all');
+    try {
+      clustersRaw = await clusterAssertionGroup(assertions, 'all');
+    } catch (error) {
+      logger.error(`Single-batch clustering failed: ${error.message}`);
+      clustersRaw = [];
+    }
   } else {
     // For large datasets, split by domain and cluster separately
     logger.info(`${assertions.length} assertions detected - splitting by domain`);
@@ -107,15 +115,36 @@ async function clusterStories(assertionsData) {
 
     const clusterGroups = [];
     for (const [domain, groupAssertions] of Object.entries(domainGroups)) {
-      const groupClusters = await clusterAssertionGroup(groupAssertions, domain);
-      // Map indices back to original positions
-      groupClusters.forEach(cluster => {
-        cluster.assertion_indices = cluster.assertion_indices.map(idx => {
-          const found = groupAssertions.findIndex(a => a.__originalIdx !== undefined);
-          return groupAssertions[idx].__originalIdx;
-        });
-      });
-      clusterGroups.push(...groupClusters);
+      try {
+        // Split large groups into sub-batches of ~60 to avoid token limits
+        const MAX_GROUP_SIZE = 60;
+        const subBatches = [];
+        if (groupAssertions.length > MAX_GROUP_SIZE) {
+          logger.info(`Group "${domain}" has ${groupAssertions.length} assertions — splitting into sub-batches of ${MAX_GROUP_SIZE}`);
+          for (let i = 0; i < groupAssertions.length; i += MAX_GROUP_SIZE) {
+            subBatches.push(groupAssertions.slice(i, i + MAX_GROUP_SIZE));
+          }
+        } else {
+          subBatches.push(groupAssertions);
+        }
+
+        for (let batchIdx = 0; batchIdx < subBatches.length; batchIdx++) {
+          const batch = subBatches[batchIdx];
+          const batchLabel = subBatches.length > 1 ? `${domain}_part${batchIdx + 1}` : domain;
+          const groupClusters = await clusterAssertionGroup(batch, batchLabel);
+          // Map indices back to original positions
+          groupClusters.forEach(cluster => {
+            cluster.assertion_indices = cluster.assertion_indices.map(idx => {
+              return batch[idx]?.__originalIdx ?? idx;
+            });
+          });
+          clusterGroups.push(...groupClusters);
+        }
+      } catch (error) {
+        logger.error(`Failed to cluster group "${domain}" (${groupAssertions.length} assertions): ${error.message}`);
+        // Continue with remaining groups instead of crashing
+        continue;
+      }
     }
     clustersRaw = clusterGroups;
   }
