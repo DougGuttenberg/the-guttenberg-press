@@ -1,5 +1,6 @@
 import { createLogger } from '../lib/logger.js';
 import { loadWeights } from '../lib/storage.js';
+import { filterRepetition, recordToMemory } from './anti-repetition.js';
 
 const logger = createLogger('rank-stories');
 
@@ -253,8 +254,14 @@ export default async function rankStories(scoredData) {
     };
   });
 
+  // Anti-repetition filter: remove clusters too similar to recent days
+  const { filtered: freshClusters, skipped } = filterRepetition(clustersWithScores);
+  if (skipped.length > 0) {
+    logger.info(`Anti-repetition removed ${skipped.length} repetitive clusters`);
+  }
+
   // Sort by final score descending
-  const sortedClusters = clustersWithScores.sort((a, b) => b.final_score - a.final_score);
+  const sortedClusters = freshClusters.sort((a, b) => b.final_score - a.final_score);
 
   // Log top scores for debugging
   logger.info(`Sorted ${sortedClusters.length} clusters by final score`);
@@ -343,6 +350,13 @@ export default async function rankStories(scoredData) {
     total_stories: totalStories,
     timestamp: new Date().toISOString()
   };
+
+  // Record selected stories to memory for anti-repetition
+  try {
+    recordToMemory(dailySelections);
+  } catch (error) {
+    logger.warn(`Failed to record stories to memory: ${error.message}`);
+  }
 
   const elapsed = Date.now() - startTime;
   logger.info(`Ranking complete in ${elapsed}ms. Selected ${totalStories} stories.`);

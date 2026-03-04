@@ -1,7 +1,8 @@
-import { sendMessage } from '../lib/telegram-client.js';
+import { sendMessage, getBot, initBot } from '../lib/telegram-client.js';
 import { sendEmail } from '../lib/email-client.js';
 import { createLogger } from '../lib/logger.js';
 import { saveMessageMap, todayStr } from '../lib/storage.js';
+import { buildFeedbackMessage } from '../telegram/feedback-handler.js';
 
 const logger = createLogger('deliver');
 
@@ -27,7 +28,8 @@ export default async function deliverPaper(formattedData) {
   const results = {
     delivery_status: {
       telegram: { success: false, message_id: null, sent_at: null },
-      email: { success: false, message_id: null, sent_at: null }
+      email: { success: false, message_id: null, sent_at: null },
+      feedback_buttons: { success: false, sent_at: null }
     }
   };
 
@@ -57,6 +59,29 @@ export default async function deliverPaper(formattedData) {
     results.delivery_status.telegram.success = false;
   }
 
+  // Send feedback buttons via Telegram (separate message after the paper)
+  try {
+    const feedbackMsg = buildFeedbackMessage(formattedData, todayStr());
+    if (feedbackMsg) {
+      logger.info('Sending feedback buttons to Telegram...');
+      const bot = initBot();
+      const chatId = process.env.TELEGRAM_CHAT_ID;
+      await bot.sendMessage(chatId, feedbackMsg.text, {
+        parse_mode: 'HTML',
+        reply_markup: feedbackMsg.keyboard,
+        disable_web_page_preview: true,
+      });
+      results.delivery_status.feedback_buttons = {
+        success: true,
+        sent_at: new Date().toISOString(),
+      };
+      logger.info('Feedback buttons sent successfully');
+    }
+  } catch (error) {
+    logger.error(`Feedback buttons failed: ${error.message}`);
+    // Non-fatal — paper was still delivered
+  }
+
   // Send to Email
   try {
     logger.info('Sending paper to email...');
@@ -84,7 +109,8 @@ export default async function deliverPaper(formattedData) {
   // Log summary
   const telegramStatus = results.delivery_status.telegram.success ? 'SUCCESS' : 'FAILED';
   const emailStatus = results.delivery_status.email.success ? 'SUCCESS' : 'FAILED';
-  logger.info(`Delivery complete — Telegram: ${telegramStatus}, Email: ${emailStatus}`);
+  const feedbackStatus = results.delivery_status.feedback_buttons.success ? 'SUCCESS' : 'SKIPPED';
+  logger.info(`Delivery complete — Telegram: ${telegramStatus}, Email: ${emailStatus}, Feedback: ${feedbackStatus}`);
 
   return results;
 }

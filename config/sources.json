@@ -1,12 +1,6 @@
 {
   "rss_feeds": [
     {
-      "name": "AI Daily Brief",
-      "url": "https://www.aidailybriefing.com/feed",
-      "category": "ai",
-      "check_frequency": 1800
-    },
-    {
       "name": "Stratechery",
       "url": "https://stratechery.com/feed/",
       "category": "business",
@@ -32,7 +26,7 @@
     },
     {
       "name": "Anthropic Blog",
-      "url": "https://www.anthropic.com/news/rss.xml",
+      "url": "https://www.anthropic.com/rss.xml",
       "category": "ai",
       "check_frequency": 1800
     },
@@ -55,14 +49,20 @@
       "check_frequency": 1800
     },
     {
-      "name": "TechCrunch",
-      "url": "https://techcrunch.com/feed/",
-      "category": "business",
+      "name": "MIT Tech Review AI",
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
+      "category": "ai",
       "check_frequency": 1800
     },
     {
-      "name": "AdAge",
-      "url": "https://adage.com/rss",
+      "name": "Axios AI",
+      "url": "https://api.axios.com/feed/technology/artificial-intelligence",
+      "category": "ai",
+      "check_frequency": 1800
+    },
+    {
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/feed/",
       "category": "business",
       "check_frequency": 1800
     },
@@ -85,15 +85,27 @@
       "check_frequency": 1800
     },
     {
-      "name": "HBR AI",
-      "url": "https://hbr.org/topic/subject/artificial-intelligence.rss",
+      "name": "Product Hunt Daily",
+      "url": "https://www.producthunt.com/feed",
       "category": "business",
       "check_frequency": 1800
     },
     {
-      "name": "MIT Tech Review AI",
-      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed",
-      "category": "ai",
+      "name": "Protocol",
+      "url": "https://www.protocol.com/feeds/feed.rss",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Charter Works",
+      "url": "https://charterworks.com/feed",
+      "category": "business",
+      "check_frequency": 1800
+    },
+    {
+      "name": "Derek Thompson (Good Work)",
+      "url": "https://substack.com/@derekthompson/feed",
+      "category": "business",
       "check_frequency": 1800
     },
     {
@@ -103,20 +115,8 @@
       "check_frequency": 1800
     },
     {
-      "name": "Gang Green Nation",
-      "url": "https://www.ganggreennation.com/rss/current",
-      "category": "sports",
-      "check_frequency": 1800
-    },
-    {
       "name": "Pro Football Focus",
       "url": "https://www.pff.com/feed",
-      "category": "sports",
-      "check_frequency": 1800
-    },
-    {
-      "name": "Football Outsiders",
-      "url": "https://www.footballoutsiders.com/rss.xml",
       "category": "sports",
       "check_frequency": 1800
     },
@@ -133,33 +133,9 @@
       "check_frequency": 1800
     },
     {
-      "name": "Resident Advisor",
-      "url": "https://ra.co/xml/rss.xml",
-      "category": "culture",
-      "check_frequency": 1800
-    },
-    {
-      "name": "Complex",
-      "url": "https://www.complex.com/feeds/channel/all.xml",
-      "category": "culture",
-      "check_frequency": 1800
-    },
-    {
       "name": "NPR Music",
       "url": "https://www.npr.org/rss/rss.php?id=1039",
       "category": "culture",
-      "check_frequency": 1800
-    },
-    {
-      "name": "Serious Eats",
-      "url": "https://www.seriouseats.com/feeds/all",
-      "category": "personal",
-      "check_frequency": 1800
-    },
-    {
-      "name": "ChefSteps",
-      "url": "https://www.chefsteps.com/activities.rss",
-      "category": "personal",
       "check_frequency": 1800
     },
     {
