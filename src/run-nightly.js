@@ -81,6 +81,7 @@ async function runNightlyPipeline() {
   // Save the final paper for delivery
   savePaper(dateStr, {
     ...formatted,
+    daily_selections: ranked.daily_selections,
     pipeline_metadata: {
       articles_fetched: articles.count,
       assertions_extracted: assertions.count,

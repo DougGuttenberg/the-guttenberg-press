@@ -64,6 +64,7 @@ cron.schedule('0 2 * * *', async () => {
 
     savePaper(dateStr, {
       ...formatted,
+      daily_selections: ranked.daily_selections,
       pipeline_metadata: {
         articles_fetched: articles.count,
         assertions_extracted: assertions.count,

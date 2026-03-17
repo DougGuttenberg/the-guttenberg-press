@@ -106,9 +106,6 @@ function buildTextPaper(rankedData, scoresData) {
     paper += `${'═'.repeat(27)}\n`;
   }
 
-  paper += `\nReact to train your paper:\n`;
-  paper += `👍 Mattered | 👎 Noise | 💾 Save | 💬 Note\n`;
-
   return paper;
 }
 
@@ -350,8 +347,7 @@ function buildHtmlPaper(rankedData, scoresData) {
 
   html += `
     <div class="footer">
-      <p>React to train your paper:<br>
-      👍 Mattered | 👎 Noise | 💾 Save | 💬 Note</p>
+      <p>📰 The Guttenberg Press</p>
     </div>
   </div>
 </body>
