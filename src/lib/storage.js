@@ -7,7 +7,7 @@ const PROJECT_ROOT = join(__dirname, '..', '..');
 const DATA_DIR = join(PROJECT_ROOT, 'data');
 
 // Ensure all data directories exist
-const dirs = ['papers', 'feedback', 'queue', 'logs'];
+const dirs = ['papers', 'feedback', 'queue', 'logs', 'entities'];
 for (const d of dirs) {
   const dir = join(DATA_DIR, d);
   if (!existsSync(dir)) {

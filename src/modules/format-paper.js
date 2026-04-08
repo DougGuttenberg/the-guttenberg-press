@@ -15,9 +15,13 @@ function buildSection(title, emoji, stories) {
 
   let section = `\n${emoji} ${title}\n\n`;
   stories.forEach((story, index) => {
-    section += `${index + 1}. ${story.headline}\n\n`;
+    const headline = story.is_evolution ? `UPDATE: ${story.headline}` : story.headline;
+    section += `${index + 1}. ${headline}\n\n`;
+    if (story.is_evolution && story.evolved_from) {
+      section += `📌 Previously: "${story.evolved_from.headline}" (${story.evolved_from.date})\n\n`;
+    }
     section += `${story.why_this_matters}\n\n`;
-    section += `💡 ${story.confidence_label} | ${story.source_count} sources\n`;
+    section += `💡 ${story.confidence_label} | ${story.source_count} source${story.source_count === 1 ? '' : 's'}\n`;
     if (story.sources && story.sources.length > 0) {
       story.sources.forEach(src => {
         section += `📰 ${src.name}: ${src.url}\n`;
@@ -47,9 +51,13 @@ function buildSportsSection(title, emoji, stories, scoresData) {
   }
 
   stories.forEach((story, index) => {
-    section += `${index + 1}. ${story.headline}\n\n`;
+    const headline = story.is_evolution ? `UPDATE: ${story.headline}` : story.headline;
+    section += `${index + 1}. ${headline}\n\n`;
+    if (story.is_evolution && story.evolved_from) {
+      section += `📌 Previously: "${story.evolved_from.headline}" (${story.evolved_from.date})\n\n`;
+    }
     section += `${story.why_this_matters}\n\n`;
-    section += `💡 ${story.confidence_label} | ${story.source_count} sources\n`;
+    section += `💡 ${story.confidence_label} | ${story.source_count} source${story.source_count === 1 ? '' : 's'}\n`;
     if (story.sources && story.sources.length > 0) {
       story.sources.forEach(src => {
         section += `📰 ${src.name}: ${src.url}\n`;
@@ -252,11 +260,16 @@ function buildHtmlPaper(rankedData, scoresData) {
       <h2><span class="emoji">${emoji}</span>${title}</h2>
 `;
     stories.forEach((story, index) => {
+      const headline = story.is_evolution ? `UPDATE: ${story.headline}` : story.headline;
+      const evolutionNote = (story.is_evolution && story.evolved_from)
+        ? `<div class="story-meta" style="color: #856404;">📌 Previously: "${story.evolved_from.headline}" (${story.evolved_from.date})</div>`
+        : '';
       html += `
-      <div class="story">
-        <h3>${index + 1}. ${story.headline}</h3>
+      <div class="story"${story.is_evolution ? ' style="border-left: 3px solid #ffc107;"' : ''}>
+        <h3>${index + 1}. ${headline}</h3>
+        ${evolutionNote}
         <div class="story-summary">${story.why_this_matters}</div>
-        <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} sources</div>
+        <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} source${story.source_count === 1 ? '' : 's'}</div>
 `;
       if (story.sources && story.sources.length > 0) {
         html += `<div class="story-link">`;
@@ -297,11 +310,16 @@ function buildHtmlPaper(rankedData, scoresData) {
 `;
     }
     selections.sports.forEach((story, index) => {
+      const headline = story.is_evolution ? `UPDATE: ${story.headline}` : story.headline;
+      const evolutionNote = (story.is_evolution && story.evolved_from)
+        ? `<div class="story-meta" style="color: #856404;">📌 Previously: "${story.evolved_from.headline}" (${story.evolved_from.date})</div>`
+        : '';
       html += `
-      <div class="story">
-        <h3>${index + 1}. ${story.headline}</h3>
+      <div class="story"${story.is_evolution ? ' style="border-left: 3px solid #ffc107;"' : ''}>
+        <h3>${index + 1}. ${headline}</h3>
+        ${evolutionNote}
         <div class="story-summary">${story.why_this_matters}</div>
-        <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} sources</div>
+        <div class="story-meta">💡 ${story.confidence_label} | ${story.source_count} source${story.source_count === 1 ? '' : 's'}</div>
 `;
       if (story.sources && story.sources.length > 0) {
         html += `<div class="story-link">`;

@@ -193,7 +193,12 @@ function buildSelectedStory(cluster, rank) {
       .slice(0, 5),
     source_count: cluster.source_count || (cluster.assertions ? cluster.assertions.length : 0),
     domains: cluster.domains || [],
-    dimension_scores: cluster.dimension_scores
+    dimension_scores: cluster.dimension_scores,
+    // Entity dedup metadata (for format-paper evolution labels + future memory)
+    is_evolution: cluster.is_evolution || false,
+    evolved_from: cluster.evolved_from || null,
+    _entities: cluster._entities || [],
+    _key_facts: cluster._key_facts || []
   };
 }
 
@@ -255,7 +260,7 @@ export default async function rankStories(scoredData) {
   });
 
   // Anti-repetition filter: remove clusters too similar to recent days
-  const { filtered: freshClusters, skipped } = filterRepetition(clustersWithScores);
+  const { filtered: freshClusters, skipped } = await filterRepetition(clustersWithScores);
   if (skipped.length > 0) {
     logger.info(`Anti-repetition removed ${skipped.length} repetitive clusters`);
   }
