@@ -39,7 +39,7 @@ jobs:
         run: npm ci
 
       - name: Create data directories
-        run: mkdir -p data/papers data/feedback data/queue data/logs
+        run: mkdir -p data/papers data/feedback data/queue data/logs data/entities
 
       - name: Download previous data
         uses: actions/download-artifact@v4
