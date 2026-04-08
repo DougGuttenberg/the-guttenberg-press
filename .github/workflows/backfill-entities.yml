@@ -1,0 +1,49 @@
+name: Backfill Entity Fingerprints
+
+on:
+  workflow_dispatch:
+
+env:
+  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+  TZ: America/New_York
+  NODE_ENV: production
+  LOG_LEVEL: info
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create data directories
+        run: mkdir -p data/papers data/feedback data/queue data/logs data/entities
+
+      - name: Download previous data
+        uses: actions/download-artifact@v4
+        with:
+          name: daily-paper-data
+          path: data/
+        continue-on-error: true
+
+      - name: Run entity backfill
+        run: node -e "import('./src/modules/anti-repetition.js').then(m => m.backfill())"
+
+      - name: Upload updated data
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-paper-data
+          path: data/
+          retention-days: 30
+          overwrite: true
